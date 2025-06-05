@@ -1,0 +1,28 @@
+@font-face {
+  font-family: montserrat;
+  src: url('../src/assets/fonts/Montserrat-VariableFont_wght.ttf');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: montserrat;
+}
+
+body {
+  background-color: var(--background_color);
+  color: var(--font_color);
+}
+
+:root {
+  --background_color:#fff;
+  --font_color: #16171d;
+  --elevate2:#333333;
+  --elevate5:#8C8C8C;
+  --header_bg:  linear-gradient(165deg,rgba(158, 155, 224, 1) 0%, rgba(149, 149, 240, 1) 35%, rgba(0, 212, 255, 1) 100%);;
+}
+
+.ant-card-body {
+  height: calc(100% - 48px);
+}

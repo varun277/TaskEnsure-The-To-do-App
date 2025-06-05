@@ -1,0 +1,33 @@
+.emptyImage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cardStyle {
+    height: 230px;
+    max-height: 230px;
+}
+
+.titleStyle {
+    text-wrap: wrap;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.descriptionStyle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* number of lines to show */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.dateStyle {
+    color: var(--elevate2);
+    font-size: 13px;
+}
