@@ -17,7 +17,7 @@ export default function Todo() {
   const handleCreatedTask = (values) => {
     setTodoList((prev) => [
       ...prev,
-      { id: Math.floor(Math.random() * 10000), ...values },
+      { id: Math.floor(Math.random() * 10000), ...values, status: "pending" },
     ]);
     closeModal();
   };
@@ -31,14 +31,12 @@ export default function Todo() {
       <Layout style={{ height: "100vh" }}>
         <Header setModalOpen={setModalOpen} />
         <Content className={styles.contentStyle}>
-          {openModal ? (
+          {openModal && (
             <AddTaskModal
               form={form}
               onTaskSubmit={handleCreatedTask}
               closeModal={closeModal}
             />
-          ) : (
-            ""
           )}
           <TodoCard list={todoList} />
         </Content>

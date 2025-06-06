@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    top: 35%;
 }
 
 .cardStyle {
@@ -30,4 +32,10 @@
 .dateStyle {
     color: var(--elevate2);
     font-size: 13px;
+}
+
+.addIconLarge {
+    font-size: 72px;
+    margin-top: 15px;
+    color: var(--elevate5);
 }

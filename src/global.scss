@@ -12,17 +12,31 @@
 
 body {
   background-color: var(--background_color);
-  color: var(--font_color);
+  color: var(--elevate1);
 }
 
 :root {
-  --background_color:#fff;
-  --font_color: #16171d;
-  --elevate2:#333333;
-  --elevate5:#8C8C8C;
-  --header_bg:  linear-gradient(165deg,rgba(158, 155, 224, 1) 0%, rgba(149, 149, 240, 1) 35%, rgba(0, 212, 255, 1) 100%);;
+  --background_color: #fff;
+  //fonts
+  --elevate1: #16171d; // darkest
+  --elevate2: #333333; // dark  
+  --elevate3: #666666; // medium
+  --elevate4: #8C8C8C; // light
+  --elevate5: #B8B8B8; // lightest
+  --elevate6: #d2d2d2;
+  //font size
+  --small_font: 12px;
+  --medium_font: 14px;
+  --large_font: 16px;
+  --header_bg: linear-gradient(165deg, rgba(158, 155, 224, 1) 0%, rgba(149, 149, 240, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  ;
 }
 
 .ant-card-body {
   height: calc(100% - 48px);
+}
+
+.ant-card .ant-card-actions {
+  background: none;
+  border-top: 1px solid var(--elevate6);
 }
