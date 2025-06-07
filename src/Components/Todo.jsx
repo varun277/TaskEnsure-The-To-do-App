@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./Todo.module.css";
 import { Button, Form, Layout } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -13,18 +13,46 @@ export default function Todo() {
   const [openModal, setModalOpen] = useState(false);
   // State that stores todo list
   const [todoList, setTodoList] = useState(todoDemo);
+  // Selected task for edit
+  const [selectedTaskForEdit, setSelectedTaskForEdit] = useState(null)
   // Store each task
   const handleCreatedTask = (values) => {
-    setTodoList((prev) => [
-      ...prev,
-      { id: Math.floor(Math.random() * 10000), ...values, status: "pending" },
-    ]);
+    // To update existing todo
+    if (selectedTaskForEdit) {
+      setTodoList((prev) =>
+        prev?.map((item) =>
+          item?.id === selectedTaskForEdit?.id ? { id: item?.id, ...values } : item
+        )
+      )
+    }
+    else {
+      setTodoList((prev) => [
+        ...prev,
+        { id: Math.floor(Math.random() * 10000), ...values, status: "Pending" },
+      ]);
+    }
     closeModal();
   };
+
   // CloseModal
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  // Update to-do list on edit, delete and status change
+  const updateTodo = (updatedTodo) => {
+    setTodoList([...updatedTodo])
+  }
+
+  const onEditTask = (task) => {
+    setSelectedTaskForEdit(task);
+    setModalOpen(true)
+  }
+
+  // Memoize the Todo component
+  const memoizedTodo = useMemo(() => {
+    return (<TodoCard list={todoList} updateTodo={updateTodo} onEditTask={onEditTask} />)
+  }, [todoList])
 
   return (
     <div className={styles.wrapper}>
@@ -36,9 +64,10 @@ export default function Todo() {
               form={form}
               onTaskSubmit={handleCreatedTask}
               closeModal={closeModal}
+              activeTask={selectedTaskForEdit}
             />
           )}
-          <TodoCard list={todoList} />
+          {memoizedTodo}
         </Content>
       </Layout>
     </div>

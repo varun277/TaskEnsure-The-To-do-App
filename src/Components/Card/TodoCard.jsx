@@ -5,14 +5,15 @@ import {
   EditOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Col, Empty, Row, Tag, Typography } from "antd";
+import { Avatar, Card, Col, Empty, Row, Tag, Tooltip, Typography } from "antd";
 import styles from "./TodoCard.module.css";
 import Meta from "antd/es/card/Meta";
-import moment from "moment";
 const { Text } = Typography;
 import { cardBg, tagColor } from "../../Constant/Constants";
+import { useCallback } from "react";
+import dayjs from "dayjs";
 
-function TodoCard({ list }) {
+function TodoCard({ list, updateTodo, onEditTask }) {
   // If no todo list available
   if (list?.length === 0) {
     return (
@@ -33,12 +34,6 @@ function TodoCard({ list }) {
     );
   }
 
-  const actions = [
-    <EditOutlined key="edit" />,
-    <DeleteOutlined key="setting" />,
-    <CheckOutlined key="completed" />
-  ];
-
   // Get random bg color for cards
   const getRandomBackground = (array) => {
     const randomIndex = Math.floor(Math.random() * array?.length)
@@ -46,22 +41,39 @@ function TodoCard({ list }) {
   }
 
   // Get tag color according to status
-  const getTagColor = (statusType) => {
+  const getTagColor = useCallback((statusType) => {
     if (!statusType) return tagColor["pending"];
     return tagColor[statusType]
+  }, [])
+
+  const onDeleteCard = (task) => {
+    const filteredList = list?.filter(item => item?.id !== task?.id);
+    updateTodo(filteredList)
+  }
+
+  const onEditCard = (task) => {
+    onEditTask(task)
+  }
+
+  const onTaskComplete = (task) => {
+
   }
 
   return (
     <>
       <Row gutter={[20, 20]}>
-        {list?.map((item) => (
+        {list?.map((item, key) => (
           <Col span={8}>
             <Card
               hoverable
               variant="borderless"
               style={{ background: getRandomBackground(cardBg), border: "1px solid var(--elevate6)" }}
               className={styles.cardStyle}
-              actions={actions}
+              actions={[
+                <Tooltip title="Edit the task"><EditOutlined key="edit" onClick={() => onEditCard(item)} /></Tooltip>,
+                <Tooltip title="Delete the task"><DeleteOutlined key="setting" onClick={() => onDeleteCard(item)} /></Tooltip>,
+                <Tooltip title="Set as complete"><CheckOutlined key="completed" onClick={() => onTaskComplete(item)} /></Tooltip>
+              ]}
             >
               <Meta
                 avatar={
@@ -78,14 +90,14 @@ function TodoCard({ list }) {
                     <p className={styles.descriptionStyle}>
                       {item?.description}
                     </p>
-                    <Text strong className={styles.dateStyle}>
+                    <Text className={styles.dateStyle}>
                       <CalendarOutlined
                         style={{
                           marginRight: "4px",
                           color: "var(--elevated2)",
                         }}
                       />
-                      {moment(item?.date).format("MM-DD-YYYY")}
+                      {dayjs(item?.date).format("DD-MM-YYYY")}
                     </Text>
                   </>
                 }
@@ -93,7 +105,7 @@ function TodoCard({ list }) {
             </Card>
           </Col>
         ))}
-      </Row>
+      </Row >
     </>
   );
 }

@@ -5,7 +5,7 @@ export const todoDemo = [
     description: "this is a testing description",
     priority: "Medium",
     date: "2025-06-24T18:30:00.000Z",
-    status: "pending"
+    status: "Pending"
   },
   {
     id: 7477,
@@ -15,7 +15,7 @@ export const todoDemo = [
       "Create a multi-step onboarding experience that guides new users through account setup, feature discovery, and initial configuration. Include interactive tooltips, progress indicators, and automated email sequences.",
     priority: "High",
     date: "2025-07-04T10:00:00.000Z",
-    status: "completed"
+    status: "Completed"
   },
   {
     id: 7468,
@@ -24,7 +24,7 @@ export const todoDemo = [
       "Write comprehensive documentation for the new feature including API endpoints, usage examples, and troubleshooting guide",
     priority: "High",
     date: "2025-06-26T09:00:00.000Z",
-    status: "completed"
+    status: "Completed"
   },
   {
     id: 7469,
@@ -33,7 +33,7 @@ export const todoDemo = [
       "Go through the pull request for user authentication improvements, test the login flow, and provide feedback on security implementations",
     priority: "High",
     date: "2025-06-25T14:00:00.000Z",
-    status: "completed"
+    status: "Completed"
   },
   {
     id: 7470,
@@ -42,7 +42,7 @@ export const todoDemo = [
       "Prepare agenda items for next week's sprint planning meeting including backlog prioritization and resource allocation",
     priority: "Medium",
     date: "2025-06-27T11:30:00.000Z",
-    status: "pending"
+    status: "Pending"
   },
   {
     id: 7471,
@@ -51,7 +51,7 @@ export const todoDemo = [
       "Address layout problems on smaller screens, particularly with the navigation menu and form inputs on iOS Safari",
     priority: "Medium",
     date: "2025-06-28T16:45:00.000Z",
-    status: "pending"
+    status: "Pending"
   },
   {
     id: 7472,
@@ -60,7 +60,7 @@ export const todoDemo = [
       "Book routine dental cleaning for next month and set reminder for insurance pre-authorization if needed",
     priority: "Low",
     date: "2025-06-30T10:00:00.000Z",
-    status: "pending"
+    status: "Pending"
   },
   {
     id: 7473,
@@ -77,7 +77,7 @@ export const todoDemo = [
       "Create slides covering project progress, upcoming milestones, and budget considerations for quarterly review with stakeholders",
     priority: "High",
     date: "2025-06-29T08:30:00.000Z",
-    status: "pending"
+    status: "Pending"
   },
   {
     id: 7475,
@@ -86,7 +86,7 @@ export const todoDemo = [
       "Purchase printer paper, pens, sticky notes, and replacement toner cartridges for the office printer",
     priority: "Low",
     date: "2025-07-02T12:00:00.000Z",
-    status: "pending"
+    status: "Pending"
   },
   {
     id: 7476,
@@ -95,6 +95,6 @@ export const todoDemo = [
       "Address the top 5 user interface suggestions from beta testers including button placement and color scheme adjustments",
     priority: "Medium",
     date: "2025-07-03T15:20:00.000Z",
-    status: "pending"
+    status: "Pending"
   },
 ];

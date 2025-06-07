@@ -1,8 +1,25 @@
 import { DatePicker, Form, Input, Modal, Select, Tag } from "antd";
 import styles from "./AddTaskModal.module.css";
+import { useEffect } from "react";
+import dayjs from "dayjs";
 const { TextArea } = Input;
 
-function AddTaskModal({ form, onTaskSubmit, closeModal }) {
+function AddTaskModal({ form, onTaskSubmit, closeModal, activeTask }) {
+
+  // if user is updating the task
+  useEffect(() => {
+    if (activeTask) {
+      form.setFieldsValue({
+        id: activeTask?.id,
+        title: activeTask?.title,
+        description: activeTask?.description,
+        priority: activeTask?.priority,
+        status: activeTask?.status,
+        date: dayjs(activeTask.date)
+      })
+    }
+  }, [])
+
   // Validate the form values
   const onSubmit = async () => {
     try {

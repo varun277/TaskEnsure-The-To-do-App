@@ -30,6 +30,6 @@ export const cardBg = [
 ];
 
 export const tagColor = {
-    "pending": "blue",
-    "completed": "green"
+    Pending: "blue",
+    Completed: "green"
 }
