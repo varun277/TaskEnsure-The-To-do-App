@@ -39,3 +39,7 @@
     margin-top: 15px;
     color: var(--elevate5);
 }
+
+.statusComplete {
+    text-decoration: line-through;
+}

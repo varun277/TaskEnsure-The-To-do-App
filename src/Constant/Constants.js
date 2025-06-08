@@ -33,3 +33,8 @@ export const tagColor = {
     Pending: "blue",
     Completed: "green"
 }
+
+export const STATUS_TYPE = {
+    COMPLETE: "Completed",
+    PENDING: "Pending"
+}
