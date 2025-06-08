@@ -30,8 +30,8 @@ export const cardBg = [
 ];
 
 export const tagColor = {
-    Pending: "blue",
-    Completed: "green"
+    Pending: "processing",
+    Completed: "success"
 }
 
 export const STATUS_TYPE = {

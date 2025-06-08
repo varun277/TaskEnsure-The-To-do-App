@@ -7,17 +7,20 @@
 }
 
 .cardStyle {
-    height: 230px;
-    max-height: 230px;
+    width: 100%;
+    height: 210px;
+    max-height: 210px;
 }
 
 .titleStyle {
+    width: 100%;
     text-wrap: wrap;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 18px;
 }
 
 .descriptionStyle {
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -42,4 +45,9 @@
 
 .statusComplete {
     text-decoration: line-through;
+}
+
+.tagStyle {
+    font-weight: 500;
+    font-size: 10px;
 }

@@ -9,13 +9,13 @@ import { todoDemo } from "../Constant/Test";
 import Dexie from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 import dayjs from "dayjs";
-import { STATUS_TYPE } from "../Constant/Constants";
+import { cardBg, STATUS_TYPE } from "../Constant/Constants";
 
 // Database Name
 const db = new Dexie('todoApp')
 // version and add keys
 db.version(1).stores({
-  todos: '++id,title,description,date,priority,status'
+  todos: '++id,title,description,date,priority,status,backgroundColor'
 })
 
 const { todos } = db
@@ -28,6 +28,12 @@ export default function Todo() {
   const [openModal, setModalOpen] = useState(false);
   // Selected task for edit
   const [selectedTaskForEdit, setSelectedTaskForEdit] = useState(null)
+  // Get random bg color for cards
+  const getRandomBackground = async (array) => {
+    const randomIndex = Math.floor(Math.random() * array?.length)
+    return array?.[randomIndex] || array[1]
+  }
+
   // Store each task
   const handleCreatedTask = async (values) => {
     try {
@@ -45,7 +51,8 @@ export default function Todo() {
           description: values?.description,
           date: dayjs(values?.date).format("DD-MM-YYYY"),
           priority: values?.priority,
-          status: STATUS_TYPE.PENDING
+          status: STATUS_TYPE.PENDING,
+          backgroundColor: await getRandomBackground(cardBg)
         })
       }
     }
