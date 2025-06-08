@@ -15,7 +15,7 @@ function AddTaskModal({ form, onTaskSubmit, closeModal, activeTask }) {
         description: activeTask?.description,
         priority: activeTask?.priority,
         status: activeTask?.status,
-        date: dayjs(activeTask.date)
+        date: dayjs(activeTask?.date, "DD-MM-YYYY")
       })
     }
   }, [])
@@ -25,6 +25,7 @@ function AddTaskModal({ form, onTaskSubmit, closeModal, activeTask }) {
     try {
       const formValues = await form.validateFields();
       onTaskSubmit(formValues);
+      form.resetFields();
     } catch (err) {
       console.error(err);
     }

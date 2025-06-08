@@ -6,30 +6,58 @@ import { Content } from "antd/es/layout/layout";
 import AddTaskModal from "../Components/Modal/AddTaskModal";
 import TodoCard from "./Card/TodoCard";
 import { todoDemo } from "../Constant/Test";
+import Dexie from "dexie";
+import { useLiveQuery } from "dexie-react-hooks";
+import dayjs from "dayjs";
+import { cardBg, STATUS_TYPE } from "../Constant/Constants";
+
+// Database Name
+const db = new Dexie('todoApp')
+// version and add keys
+db.version(1).stores({
+  todos: '++id,title,description,date,priority,status,backgroundColor'
+})
+
+const { todos } = db
 
 export default function Todo() {
   const [form] = Form.useForm();
+  // hook for getting all todo data from db
+  const todoList = useLiveQuery(() => todos.toArray(), [])
   // Open or close modal
   const [openModal, setModalOpen] = useState(false);
-  // State that stores todo list
-  const [todoList, setTodoList] = useState(todoDemo);
   // Selected task for edit
   const [selectedTaskForEdit, setSelectedTaskForEdit] = useState(null)
+  // Get random bg color for cards
+  const getRandomBackground = async (array) => {
+    const randomIndex = Math.floor(Math.random() * array?.length)
+    return array?.[randomIndex] || array[1]
+  }
+
   // Store each task
-  const handleCreatedTask = (values) => {
-    // To update existing todo
-    if (selectedTaskForEdit) {
-      setTodoList((prev) =>
-        prev?.map((item) =>
-          item?.id === selectedTaskForEdit?.id ? { id: item?.id, ...values } : item
-        )
-      )
+  const handleCreatedTask = async (values) => {
+    try {
+      if (selectedTaskForEdit) {
+        await todos.update(selectedTaskForEdit?.id,
+          {
+            ...values,
+            date: dayjs(values?.date).format("DD-MM-YYYY"),
+            status: STATUS_TYPE.PENDING
+          })
+      } else {
+        // To update existing todo
+        await todos.add({
+          title: values?.title,
+          description: values?.description,
+          date: dayjs(values?.date).format("DD-MM-YYYY"),
+          priority: values?.priority,
+          status: STATUS_TYPE.PENDING,
+          backgroundColor: await getRandomBackground(cardBg)
+        })
+      }
     }
-    else {
-      setTodoList((prev) => [
-        ...prev,
-        { id: Math.floor(Math.random() * 10000), ...values, status: "Pending" },
-      ]);
+    catch (err) {
+      console.error(err);
     }
     closeModal();
   };
@@ -39,19 +67,40 @@ export default function Todo() {
     setModalOpen(false);
   };
 
-  // Update to-do list on edit, delete and status change
-  const updateTodo = (updatedTodo) => {
-    setTodoList([...updatedTodo])
-  }
-
+  // Edit a task
   const onEditTask = (task) => {
     setSelectedTaskForEdit(task);
     setModalOpen(true)
   }
 
+  // Delete a task
+  const onDeleteTask = async (task) => {
+    try {
+      await todos.delete(task?.id)
+    }
+    catch (err) {
+      console.err(err);
+    }
+  }
+
+  // Set a todo as complete 
+  const onTaskStatusChange = async (task, status) => {
+    try {
+      if (status === STATUS_TYPE.PENDING) {
+        await todos.update(task?.id, { status: STATUS_TYPE.COMPLETE })
+      }
+      else if (status === STATUS_TYPE.COMPLETE) {
+        await todos.update(task?.id, { status: STATUS_TYPE.PENDING })
+      }
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
+
   // Memoize the Todo component
   const memoizedTodo = useMemo(() => {
-    return (<TodoCard list={todoList} updateTodo={updateTodo} onEditTask={onEditTask} />)
+    return (<TodoCard list={todoList} onEditTask={onEditTask} onDeleteTask={onDeleteTask} onTaskStatusChange={onTaskStatusChange} />)
   }, [todoList])
 
   return (
