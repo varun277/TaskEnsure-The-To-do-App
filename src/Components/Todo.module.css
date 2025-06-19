@@ -37,3 +37,17 @@
     flex-direction: column;
     margin-bottom: 3px;
 }
+
+.firstTitle {
+    color: #1677ff;
+    font-size: 30px;
+}
+
+.secondTitle {
+    color: #A1EEBD;
+    font-size: 30px;
+}
+
+.secondaryTitle {
+    font-style: italic;
+}

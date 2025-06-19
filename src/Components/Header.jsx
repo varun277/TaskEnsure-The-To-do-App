@@ -1,11 +1,12 @@
 import { FilterOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Dropdown, Tooltip } from "antd";
 import styles from './Todo.module.css'
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const Header = ({ setModalOpen }) => {
     // State to store all filters
     const [queryFilter, setQueryFilter] = useState({})
+
     // Get URLSearchParams instance
     const params = new URLSearchParams(window.location.search);
 
@@ -19,16 +20,20 @@ const Header = ({ setModalOpen }) => {
         setModalOpen(true)
     };
 
+    // Get the array of current status filters
+    const currentStatusFilter = useMemo(() => {
+        const statusParam = queryFilter.status || '';
+        return statusParam ? statusParam.split(',') : [];
+    }, [queryFilter?.status])
+
     // Handle dropdown click
     const handleDropdownItemClick = (e) => {
         const { key } = e;
 
         if (key.startsWith('status')) {
             const filterValue = key === "status_complete" ? "complete" : "pending";
-            // If there is a status parameter in URL check the values are same , if same then remove the value, if not same then append
-            const currentStatus = params?.get('status');
 
-            let statusArray = currentStatus ? currentStatus.split(',') : [];
+            let statusArray = [...currentStatusFilter]
             // Toggle the status value
             if (statusArray?.includes(filterValue)) {
                 // Remove if already present
@@ -51,7 +56,6 @@ const Header = ({ setModalOpen }) => {
     }
 
     const updateQueryParams = (newParams) => {
-        const params = new URLSearchParams(window.location.search);
 
         // Add/update multiple parameters
         Object.entries(newParams).forEach(([key, value]) => {
@@ -79,11 +83,11 @@ const Header = ({ setModalOpen }) => {
             children: [
                 {
                     key: 'status_complete',
-                    label: <Checkbox value="Complete">Completed</Checkbox>
+                    label: <Checkbox checked={currentStatusFilter?.includes('complete')}>Completed</Checkbox>
                 },
                 {
                     key: 'status_pending',
-                    label: <Checkbox value="Pending">Pending</Checkbox>
+                    label: <Checkbox checked={currentStatusFilter?.includes('pending')}>Pending</Checkbox>
                 }
             ],
         },
@@ -93,11 +97,11 @@ const Header = ({ setModalOpen }) => {
             children: [
                 {
                     key: 'date_asc',
-                    label: 'Ascending',
+                    label: <div>Ascending</div>,
                 },
                 {
                     key: 'date_desc',
-                    label: 'Descending',
+                    label: <div>Descending</div>,
                 },
 
             ],
@@ -107,11 +111,11 @@ const Header = ({ setModalOpen }) => {
     return (
         <div className={styles.header}>
             <div className={styles.title}>
-                <h1 style={{ fontSize: "30px", color: "#1677ff" }}>
+                <h1 className={styles.firstTitle}>
                     Task
-                    <span style={{ color: "#A1EEBD", fontSize: "30px" }}>Ensure</span>
+                    <span className={styles.secondTitle}>Ensure</span>
                 </h1>
-                <p style={{ fontStyle: "italic" }}>Your Life, Perfectly Orchestrated</p>
+                <p className={styles.secondaryTitle}>Your Life, Perfectly Orchestrated</p>
             </div>
             <div className={styles.buttonWrapper}>
                 <Button
