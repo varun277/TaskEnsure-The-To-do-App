@@ -1,10 +1,15 @@
 import styles from "./App.module.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Todo from "./Components/Todo";
 
 export default function App() {
   return (
     <>
-      <Todo />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Todo />} />
+        </Routes>
+      </Router>
     </>
   );
 }

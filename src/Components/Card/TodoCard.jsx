@@ -57,6 +57,7 @@ function TodoCard({ list, onEditTask, onDeleteTask, onTaskStatusChange }) {
       <Row gutter={[20, 20]} style={{ width: "100%" }}>
         {list?.map((item, key) => (
           <Col
+            key={`col_${key}`}
             style={{ width: "100%" }}
             xs={24} sm={12} md={12} lg={12} xl={8}
           >

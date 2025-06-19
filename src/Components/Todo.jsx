@@ -10,6 +10,7 @@ import Dexie from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 import dayjs from "dayjs";
 import { cardBg, STATUS_TYPE } from "../Constant/Constants";
+import Header from "./Header";
 
 // Database Name
 const db = new Dexie('todoApp')
@@ -122,29 +123,3 @@ export default function Todo() {
     </div>
   );
 }
-
-const Header = ({ setModalOpen }) => {
-  // Handle Add task button
-  const handleButtonClick = () => {
-    setModalOpen(true);
-  };
-
-  return (
-    <div className={styles.header}>
-      <div className={styles.title}>
-        <h1 style={{ fontSize: "30px", color: "#1677ff" }}>
-          Task
-          <span style={{ color: "#A1EEBD", fontSize: "30px" }}>Ensure</span>
-        </h1>
-        <p style={{ fontStyle: "italic" }}>Your Life, Perfectly Orchestrated</p>
-      </div>
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={handleButtonClick}
-      >
-        Add Task
-      </Button>
-    </div>
-  );
-};
