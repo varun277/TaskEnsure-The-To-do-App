@@ -51,3 +51,8 @@
 .secondaryTitle {
     font-style: italic;
 }
+
+.dropdownItemStyle {
+    display: flex;
+    gap: 4px;
+}

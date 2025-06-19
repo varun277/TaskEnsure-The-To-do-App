@@ -1,4 +1,4 @@
-import { FilterOutlined, PlusOutlined } from "@ant-design/icons";
+import { CheckOutlined, FilterOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Dropdown, Tooltip } from "antd";
 import styles from './Todo.module.css'
 import { useEffect, useMemo, useState } from "react";
@@ -50,7 +50,8 @@ const Header = ({ setModalOpen }) => {
         else if (key.startsWith('date')) {
             const filterValue = key === "date_asc" ? "asc" : "desc"
             updateQueryParams({
-                "date": filterValue
+                // Remove the date filter if filterValue === queryFilter date
+                "date": queryFilter?.date === filterValue ? null : filterValue
             })
         }
     }
@@ -97,11 +98,23 @@ const Header = ({ setModalOpen }) => {
             children: [
                 {
                     key: 'date_asc',
-                    label: <div>Ascending</div>,
+                    label: <div className={styles.dropdownItemStyle}
+                        style={{
+                            color: queryFilter?.date === 'asc' && "var(--selected_text)"
+                        }}>
+                        {queryFilter?.date === 'asc' && (<CheckOutlined />)}
+                        Ascending
+                    </div>,
                 },
                 {
                     key: 'date_desc',
-                    label: <div>Descending</div>,
+                    label: <div className={styles.dropdownItemStyle}
+                        style={{
+                            color: queryFilter?.date === 'desc' && "var(--selected_text)"
+                        }}>
+                        {queryFilter?.date === 'desc' && (<CheckOutlined />)}
+                        Descending
+                    </div>,
                 },
 
             ],

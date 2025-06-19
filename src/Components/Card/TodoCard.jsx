@@ -95,7 +95,7 @@ function TodoCard({ list, onEditTask, onDeleteTask, onTaskStatusChange }) {
                           color: "var(--elevated2)",
                         }}
                       />
-                      {item?.date}
+                      Due date : {item?.date}
                     </Text>
                   </>
                 }
