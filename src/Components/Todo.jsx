@@ -1,11 +1,9 @@
 import { useMemo, useState } from "react";
 import styles from "./Todo.module.css";
-import { Button, Form, Layout } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Form, Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import AddTaskModal from "../Components/Modal/AddTaskModal";
 import TodoCard from "./Card/TodoCard";
-import { todoDemo } from "../Constant/Test";
 import Dexie from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 import dayjs from "dayjs";
@@ -23,8 +21,14 @@ const { todos } = db
 
 export default function Todo() {
   const [form] = Form.useForm();
+  // State to store all filters
+  const [queryFilter, setQueryFilter] = useState({})
+  console.log('queryFilteres', queryFilter);
   // hook for getting all todo data from db
-  const todoList = useLiveQuery(() => todos.toArray(), [])
+  const todoList = useLiveQuery(() => {
+    return todos.toArray()
+  }, []);
+
   // Open or close modal
   const [openModal, setModalOpen] = useState(false);
   // Selected task for edit
@@ -107,7 +111,7 @@ export default function Todo() {
   return (
     <div className={styles.wrapper}>
       <Layout style={{ height: "100vh" }}>
-        <Header setModalOpen={setModalOpen} />
+        <Header setModalOpen={setModalOpen} queryFilter={queryFilter} setQueryFilter={setQueryFilter} />
         <Content className={styles.contentStyle}>
           {openModal && (
             <AddTaskModal

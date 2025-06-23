@@ -1,17 +1,17 @@
 import { CheckOutlined, FilterOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Dropdown, Tooltip } from "antd";
 import styles from './Todo.module.css'
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
-const Header = ({ setModalOpen }) => {
-    // State to store all filters
-    const [queryFilter, setQueryFilter] = useState({})
+const Header = ({ setModalOpen, queryFilter, setQueryFilter }) => {
 
     // Get URLSearchParams instance
     const params = new URLSearchParams(window.location.search);
 
     useEffect(() => {
-        const initialFilters = Object.fromEntries(params);
+        const filters = Object.fromEntries(params);
+        const initialFilters = { ...filters, status: filters?.status?.split(',') || null }
+
         setQueryFilter(initialFilters)
     }, [])
 
@@ -22,8 +22,8 @@ const Header = ({ setModalOpen }) => {
 
     // Get the array of current status filters
     const currentStatusFilter = useMemo(() => {
-        const statusParam = queryFilter.status || '';
-        return statusParam ? statusParam.split(',') : [];
+        const statusParam = queryFilter.status;
+        return statusParam || []
     }, [queryFilter?.status])
 
     // Handle dropdown click
@@ -44,7 +44,7 @@ const Header = ({ setModalOpen }) => {
             }
 
             updateQueryParams({
-                "status": statusArray?.length > 0 ? statusArray.join(',') : null
+                "status": statusArray
             })
         }
         else if (key.startsWith('date')) {
@@ -57,13 +57,12 @@ const Header = ({ setModalOpen }) => {
     }
 
     const updateQueryParams = (newParams) => {
-
         // Add/update multiple parameters
-        Object.entries(newParams).forEach(([key, value]) => {
-            if (value === null || value === undefined || value === '') {
+        Object.entries(newParams)?.forEach(([key, value]) => {
+            if (value === null || value === undefined || value === '' || !value?.length) {
                 params.delete(key);
             } else {
-                params.set(key, value);
+                params.set(key, value.toString());
             }
         });
 
