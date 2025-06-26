@@ -3,6 +3,7 @@
 TaskEnsure is a powerful, modern todo application designed to streamline your daily task management. With its intuitive interface and robust offline capabilities, it ensures your productivity remains uninterrupted, whether you're online or off. All your tasks are securely stored locally, providing reliable and efficient organization at your fingertips.
 
 Deployed link : https://taskensure-the-todo-app.netlify.app
+![image](https://github.com/user-attachments/assets/224065e4-d0ab-4491-b485-7728f1c71945)
 
 ## ✨ Features
 
