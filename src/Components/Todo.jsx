@@ -23,11 +23,35 @@ export default function Todo() {
   const [form] = Form.useForm();
   // State to store all filters
   const [queryFilter, setQueryFilter] = useState({})
-  console.log('queryFilteres', queryFilter);
+
   // hook for getting all todo data from db
-  const todoList = useLiveQuery(() => {
-    return todos.toArray()
-  }, []);
+  const todoList = useLiveQuery(async () => {
+    let query = todos.toCollection();
+
+    // Apply status filtering if queryFilter has status array with items
+    if (Array.isArray(queryFilter?.status) && queryFilter?.status?.length > 0) {
+      query = query?.filter(todo => queryFilter?.status.includes(todo?.status));
+    }
+    // Get the filtered data
+    let filteredTodos = await query.toArray();
+
+    // Apply date sorting if queryFilter has date sort order
+    if (queryFilter?.date === 'asc' || queryFilter?.date === 'desc') {
+      filteredTodos?.sort((a, b) => {
+        // Convert DD-MM-YYYY format to Date objects for comparison
+        const dateA = dayjs(a?.date, 'DD-MM-YYYY').toDate();
+        const dateB = dayjs(b?.date, 'DD-MM-YYYY').toDate();
+
+        if (queryFilter?.date === 'asc') {
+          return dateA - dateB; // Ascending order (oldest first)
+        } else {
+          return dateB - dateA; // Descending order (newest first)
+        }
+      });
+    }
+    return [...filteredTodos];
+  }, [queryFilter]);
+
 
   // Open or close modal
   const [openModal, setModalOpen] = useState(false);

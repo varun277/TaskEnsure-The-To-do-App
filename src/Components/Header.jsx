@@ -2,6 +2,7 @@ import { CheckOutlined, FilterOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Dropdown, Tooltip } from "antd";
 import styles from './Todo.module.css'
 import { useEffect, useMemo } from "react";
+import { STATUS_TYPE } from "../Constant/Constants";
 
 const Header = ({ setModalOpen, queryFilter, setQueryFilter }) => {
 
@@ -31,7 +32,7 @@ const Header = ({ setModalOpen, queryFilter, setQueryFilter }) => {
         const { key } = e;
 
         if (key.startsWith('status')) {
-            const filterValue = key === "status_complete" ? "complete" : "pending";
+            const filterValue = key === "status_complete" ? STATUS_TYPE.COMPLETE : STATUS_TYPE.PENDING;
 
             let statusArray = [...currentStatusFilter]
             // Toggle the status value
@@ -83,11 +84,11 @@ const Header = ({ setModalOpen, queryFilter, setQueryFilter }) => {
             children: [
                 {
                     key: 'status_complete',
-                    label: <Checkbox checked={currentStatusFilter?.includes('complete')}>Completed</Checkbox>
+                    label: <Checkbox checked={currentStatusFilter?.includes(STATUS_TYPE.COMPLETE)}>Completed</Checkbox>
                 },
                 {
                     key: 'status_pending',
-                    label: <Checkbox checked={currentStatusFilter?.includes('pending')}>Pending</Checkbox>
+                    label: <Checkbox checked={currentStatusFilter?.includes(STATUS_TYPE.PENDING)}>Pending</Checkbox>
                 }
             ],
         },

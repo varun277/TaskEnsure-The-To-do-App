@@ -36,8 +36,11 @@ function TodoCard({ list, onEditTask, onDeleteTask, onTaskStatusChange }) {
 
   // Get tag color according to status
   const getTagColor = useCallback((statusType) => {
-    if (!statusType) return tagColor["pending"];
-    return tagColor[statusType]
+    if (!statusType) {
+      return tagColor["PENDING"];
+    }
+    const status = statusType === STATUS_TYPE.PENDING ? "PENDING" : "COMPLETE"
+    return tagColor[status]
   }, [])
 
   const onDeleteCard = (task) => {
@@ -50,6 +53,12 @@ function TodoCard({ list, onEditTask, onDeleteTask, onTaskStatusChange }) {
 
   const handleTaskStatus = (task, status) => {
     onTaskStatusChange(task, status)
+  }
+
+  // Status label for tags
+  const STATUS_LABEL = {
+    pending: "Pending",
+    complete: "Completed"
   }
 
   return (
@@ -70,7 +79,7 @@ function TodoCard({ list, onEditTask, onDeleteTask, onTaskStatusChange }) {
               actions={[
                 <Tooltip title="Edit the task"><EditOutlined key="edit" onClick={() => onEditCard(item)} /></Tooltip>,
                 <Tooltip title="Delete the task"><DeleteOutlined key="setting" onClick={() => onDeleteCard(item)} className={styles.deleteIcon} /></Tooltip>,
-                <>{item?.status === "Pending" ? < Tooltip title="Mark as complete"><CheckOutlined key="completed" onClick={() => handleTaskStatus(item, item?.status)} /></Tooltip > : < Tooltip title="Mark as incomplete"><UndoOutlined key="incomplete" onClick={() => handleTaskStatus(item, item?.status)} /></Tooltip >}</>
+                <>{item?.status === STATUS_TYPE.PENDING ? < Tooltip title="Mark as complete"><CheckOutlined key="completed" onClick={() => handleTaskStatus(item, item?.status)} /></Tooltip > : < Tooltip title="Mark as incomplete"><UndoOutlined key="incomplete" onClick={() => handleTaskStatus(item, item?.status)} /></Tooltip >}</>
               ]}
             >
               <Meta
@@ -80,7 +89,7 @@ function TodoCard({ list, onEditTask, onDeleteTask, onTaskStatusChange }) {
                 title={
                   <>
                     <p className={`${styles.titleStyle} ${item?.status === STATUS_TYPE.COMPLETE ? styles.statusComplete : ''}`}>{item?.title}</p>
-                    <Tag color={getTagColor(item?.status)}><p className={styles.tagStyle}>{item?.status || STATUS_TYPE.PENDING}</p></Tag>
+                    <Tag color={getTagColor(item?.status)}><p className={styles.tagStyle}>{STATUS_LABEL[item?.status] || "Pending"}</p></Tag>
                   </>
                 }
                 description={
