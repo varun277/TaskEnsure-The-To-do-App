@@ -1,15 +1,14 @@
 import { useMemo, useState } from "react";
 import styles from "./Todo.module.css";
-import { Button, Form, Layout } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Form, Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import AddTaskModal from "../Components/Modal/AddTaskModal";
 import TodoCard from "./Card/TodoCard";
-import { todoDemo } from "../Constant/Test";
 import Dexie from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 import dayjs from "dayjs";
 import { cardBg, STATUS_TYPE } from "../Constant/Constants";
+import Header from "./Header";
 
 // Database Name
 const db = new Dexie('todoApp')
@@ -22,8 +21,38 @@ const { todos } = db
 
 export default function Todo() {
   const [form] = Form.useForm();
+  // State to store all filters
+  const [queryFilter, setQueryFilter] = useState({})
+
   // hook for getting all todo data from db
-  const todoList = useLiveQuery(() => todos.toArray(), [])
+  const todoList = useLiveQuery(async () => {
+    let query = todos.toCollection();
+
+    // Apply status filtering if queryFilter has status array with items
+    if (Array.isArray(queryFilter?.status) && queryFilter?.status?.length > 0) {
+      query = query?.filter(todo => queryFilter?.status.includes(todo?.status));
+    }
+    // Get the filtered data
+    let filteredTodos = await query.toArray();
+
+    // Apply date sorting if queryFilter has date sort order
+    if (queryFilter?.date === 'asc' || queryFilter?.date === 'desc') {
+      filteredTodos?.sort((a, b) => {
+        // Convert DD-MM-YYYY format to Date objects for comparison
+        const dateA = dayjs(a?.date, 'DD-MM-YYYY').toDate();
+        const dateB = dayjs(b?.date, 'DD-MM-YYYY').toDate();
+
+        if (queryFilter?.date === 'asc') {
+          return dateA - dateB; // Ascending order (oldest first)
+        } else {
+          return dateB - dateA; // Descending order (newest first)
+        }
+      });
+    }
+    return [...filteredTodos];
+  }, [queryFilter]);
+
+
   // Open or close modal
   const [openModal, setModalOpen] = useState(false);
   // Selected task for edit
@@ -106,7 +135,7 @@ export default function Todo() {
   return (
     <div className={styles.wrapper}>
       <Layout style={{ height: "100vh" }}>
-        <Header setModalOpen={setModalOpen} />
+        <Header setModalOpen={setModalOpen} queryFilter={queryFilter} setQueryFilter={setQueryFilter} />
         <Content className={styles.contentStyle}>
           {openModal && (
             <AddTaskModal
@@ -122,29 +151,3 @@ export default function Todo() {
     </div>
   );
 }
-
-const Header = ({ setModalOpen }) => {
-  // Handle Add task button
-  const handleButtonClick = () => {
-    setModalOpen(true);
-  };
-
-  return (
-    <div className={styles.header}>
-      <div className={styles.title}>
-        <h1 style={{ fontSize: "30px", color: "#1677ff" }}>
-          Task
-          <span style={{ color: "#A1EEBD", fontSize: "30px" }}>Ensure</span>
-        </h1>
-        <p style={{ fontStyle: "italic" }}>Your Life, Perfectly Orchestrated</p>
-      </div>
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={handleButtonClick}
-      >
-        Add Task
-      </Button>
-    </div>
-  );
-};

@@ -25,3 +25,34 @@
     padding: 20px 0 20px 20px;
     overflow-y: auto;
 }
+
+.buttonWrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.checkboxGroup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3px;
+}
+
+.firstTitle {
+    color: #1677ff;
+    font-size: 30px;
+}
+
+.secondTitle {
+    color: #A1EEBD;
+    font-size: 30px;
+}
+
+.secondaryTitle {
+    font-style: italic;
+}
+
+.dropdownItemStyle {
+    display: flex;
+    gap: 4px;
+}

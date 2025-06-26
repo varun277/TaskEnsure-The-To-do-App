@@ -32,9 +32,9 @@ function AddTaskModal({ form, onTaskSubmit, closeModal, activeTask }) {
   };
   // Type of priorities
   const priorityOptions = [
-    { label: <Tag color="green">Low</Tag>, value: "Low" },
-    { label: <Tag color="gold">Medium</Tag>, value: "Medium" },
-    { label: <Tag color="red">High</Tag>, value: "High" },
+    { label: <Tag color="green">Low</Tag>, value: "low" },
+    { label: <Tag color="gold">Medium</Tag>, value: "medium" },
+    { label: <Tag color="red">High</Tag>, value: "high" },
   ];
 
   return (
